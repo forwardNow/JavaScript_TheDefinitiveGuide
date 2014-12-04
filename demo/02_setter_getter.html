@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+
+<script>
+// 定义 Object.prototype.extend
+Object.defineProperty( Object.prototype, "extend", {
+    writable: true,
+    enumerable: false,  // 不可枚举
+    configurable: true,
+    value: function(o) {
+        // 得到o的所有自有属性名称
+        var names = Object.getOwnPropertyNames(o);
+        for (var i = 0; i < names.length; i++) {
+            // 跳过 已存在的属性
+            if (names[i] in this) {
+                continue;
+            }
+            // 复制 o中的属性的描述符
+            var desc = Object.getOwnPropertyDescriptor(o, names[i]);
+            Object.defineProperty(this, names[i], desc);
+        }
+    }
+});
+
+function classof(o) {
+    if (o === null) {
+        return "Null";
+    }
+    if (o === undefined) {
+        return "Undefined";
+    }
+    return Object.prototype.toString.call(o).slice(8, -1);
+}
+
+
+
+</script>
+
+</head>
+<body>
+    
+</body>
+</html>
