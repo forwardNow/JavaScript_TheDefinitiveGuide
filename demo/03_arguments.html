@@ -1,0 +1,29 @@
+<script>
+/** 将原始数组的length元素复制至目标数组
+ *  
+ *
+ */
+function arraycopy( /* array  */ from,
+                    /* index  */ from_start,
+                    /* array  */ to,
+                    /* index  */ to_start,
+                    /* integer*/ length ) {
+
+    if (from_start + length > from.length) {
+        length = from.length - from_start;
+    }
+    for (var i = 0; i < length; i++) {
+        to[to_start + i] = from[from_start + i];
+    }
+
+}
+
+function easycopy(args) {
+    arraycopy(args.from,
+              args.from_start || 0, // 默认值
+              args.to,
+              args.to_start || 0, // 默认值
+              args.length);
+}
+
+</script>
