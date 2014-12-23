@@ -1,8 +1,4 @@
 <script>
-/** 将原始数组的length元素复制至目标数组
- *  
- *
- */
 function arraycopy( /* array  */ from,
                     /* index  */ from_start,
                     /* array  */ to,
@@ -24,6 +20,58 @@ function easycopy(args) {
               args.to,
               args.to_start || 0, // 默认值
               args.length);
+}
+
+
+function flexisum(a) {
+  var total = 0;
+  for (var i = 0; i < arguments.length; i++) {
+    var n, element = arguments[i];
+    if (null == element) {  // 忽略null和undefined
+        continue;
+    }
+    if (isArrayLike(element)) {
+        n = flexisum.apply(this, element);
+    } else if ("function" === typeof element) {
+        n = Number( element() );
+    } else {
+        n = Number( element );
+    }
+    if (isNaN(n)) {
+        throw Error("flexisum(): can't convert "+element+" to number.");
+    }
+    total += n;
+  }
+  return total;
+}
+
+// 先定义一些简单的函数
+function add(x, y) { return x + y; }
+function subtract(x, y) { return x - y; }
+function multiply(x, y) { return x * y; }
+function divide(x, y) { return x / y; }
+
+// 以函数作为参数, 并传入两个操作数
+function operate(operator, operand1, operand2) {
+  return operator(operand1, operand2);
+}
+
+// 2 + 3
+operator(add, 2, 3);
+
+var operators = {
+  add: function(x, y) { return x + y; },
+  subtract: function(x, y) { return x - y; },
+  multiply: function(x, y) { return x * y; },
+  divide: function(x, y) { return x / y; },
+  pow: Math.pow
+};
+
+function operate2(operation, operand1, operand2) {
+  if ("function" === typeof operators[operation]) {
+      return operators[operation](operand1, operand2);
+  }
+  throw "unknown operator";
 }
 
 </script>
