@@ -70,8 +70,67 @@ Set._v2s = function(val) {
 };
 Set._v2s.next = 100; // 设置初始id的值
 
-</script>
+// --
 
+// 将p中可枚举属性复制到o中，
+// 如果p中存在与o同名的属性，则覆盖o中的属性
+function extend(o, p) {
+    for (prop in p) {
+        o[prop] = p[prop];
+    }
+    return o;
+}
+
+extend(Set.prototype, {
+    // 将集合转换为字符串
+    toString: function () {
+        var s = "{",
+            i = 0;
+        this.foreach(function(v) { 
+            s += ((i++ > 0) ? ", " : "") + v;
+        });
+        return s + "}";
+    },
+    // 对于集合里所有值 则调用toLocaleString()
+    toLocaleString: function () {
+        var s = "{";
+            i = 0;
+        this.foreach(function(v) {
+            if (i++ > 0) {
+                s += ", "; 
+            }
+            if (v == null) { // null 和 undefined, 没有任何方法
+                s += v;
+            } else { // 其他情况
+                s += v.toLocaleString();
+            }
+        });
+        return s + "}";
+    },
+    // 将集合转换为值数组
+    toArray: function () {
+        var a = [];
+        this.foreach(function (v) {
+            a.push(v);
+        });
+        return a;
+    }
+});
+
+// 对于要从JSON转换为字符串的集合都被当做数组来对待
+Set.prototype.toJSON = Set.prototype.toArray;
+
+
+/* ==>
+var s = new Set(1, "a", new Date());
+s.toString();
+// => "{1, a, Tue Jan 06 2015 16:57:37 GMT+0800 (CST)}"
+s.toLocaleString();
+// => "{1, a, 1/6/2015, 4:57:37 PM}"
+s.toArray();
+// => [1, "a", Tue Jan 06 2015 16:57:37 GMT+0800 (CST)]
+*/
+</script>
 
 
 
