@@ -1,0 +1,14 @@
+<script>
+/**
+ * 把 p中可枚举属性 复制到o中，并返回o
+ * 如果有同名属性（如 p["a"],o["a"]），则覆盖o中的属性（o["a"] = p["a"]）
+ */
+function extend(o, p) {
+    for (prop in p) {
+        o[prop] = p[prop];
+    }
+    return o;
+}
+
+
+</script>

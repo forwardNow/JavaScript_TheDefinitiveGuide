@@ -1,0 +1,83 @@
+<script>
+
+var generic = {
+
+    // 返回一个字符串：[函数名: 属性1=值1, 属性2=值2, ...]
+    toString: function () {
+        var s = '[';
+        var n = 0;
+        
+        // 函数的name属性是非标准的，并不是在所有环境中都可用
+        if (this.constructor && this.constructor.name) {
+            s += this.constructor.name + ": ";
+        }
+
+        // 枚举所有非继承且非函数的属性
+        for (var name in this) {
+            var value;
+            if (!this.hasOwnProperty(name)) { // 跳过继承来的属性
+                continue;
+            }
+            value = this[name];
+            if (typeof value === "function") { // 跳过方法
+                continue;
+            }
+            if (n++) {
+                s += ", ";
+            }
+            s += name + '=' + value;
+        }
+
+        return s + ']';
+    },
+
+    // 通过比较this和that的构造函数和实例属性来判断它们是否相等
+    // 这种方法只适用于实例属性是原始值的情况，原始值可通过“===”来比较
+    equals: function (that) {
+        if (that == null) { // 排除 null 和 undefined
+            return false;
+        }
+        if (this.constructor !== that.constructor) {
+            return false;
+        }
+        for (var name in this) {
+            if (name === "|**objectid**|") { // 跳过特殊属性
+                continue;
+            }
+            if (!this.hasOwnProperty(name)) { // 跳过继承来的属性
+                continue;
+            }
+            if (this[name] !== that[name]) { // 比较每个属性值是否相等
+                return false;
+            }
+        }
+        return true; // 运行到这里，说明所有属性都匹配，两个对象相等
+    }
+
+};
+
+// ---
+
+function Range (from, to) {
+    this.from = from;
+    this.to = to;
+}
+
+Range.prototype.toString = generic.toString;
+Range.prototype.equals = generic.equals;
+
+var r1 = new Range(1, 1);
+var r2 = new Range(1, 2);
+var r3 = new Range(1, 2);
+
+console.log(r1.toString()); // => [Range: from=1, to=1]
+console.log(r1.equals(r2)); // => false
+console.log(r2.equals(r3)); // => true
+
+</script>
+
+
+
+
+
+

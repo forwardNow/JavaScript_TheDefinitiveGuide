@@ -1,0 +1,95 @@
+<script>
+var FilteredSet = Set.extend(
+    // 构造函数，将set和filter进行组合
+    function FilteredSet(set, filter) {
+        this.set = set;
+        this.filter = filter;
+    },
+
+    // 实例方法
+    {
+        add: function () {
+            // 有过滤器则使用
+            if (this.filter) {
+                for (var i = 0; i < arguments.length; i++) {
+                    var v = arguments[i];
+                    if (!this.filter(v)) {
+                        throw new Error("FilteredSet: value " + v + " rejected by filter");
+                    }
+                }
+            }
+
+            // 调用set中的add()方法
+            this.set.add.apply(this.set, arguments);
+
+            return this;
+        },
+        remove: function () {
+            this.set.remove.apply(this.set, arguments);
+            return this;
+        },
+        contains: function (v) {
+            return this.set.contains(v);
+        },
+        size: function () {
+            return this.set.size();
+        },
+        foreach: function (f, c) {
+            this.set.foreach(f, c);
+        }
+    } 
+);
+
+
+// -------------------------
+function defineSubclass(superclass,     // 父类的构造器
+                        constructor,    // 新的子类的构造函数
+                        methods,        // 实例方法：复制至原型中
+                        statics)        // 类属性：复制至构造函数中
+{
+    // 建立子类的原型
+    constructor.prototype = inherit(superclass.prototype);
+    constructor.prototype.constructor = constructor;
+
+    // 复制方法
+    if (methods) extend(constructor.prototype, methods);
+    // 复制类属性
+    if (statics) extend(constructor          , statics); 
+
+    return constructor;
+}
+
+// --------------------
+
+Function.prototype.extend = function (constructor, methods, statics) {
+    return defineSubclass(this, constructor, methods, statics);
+};
+
+// --------------------
+
+function extend(o, p) {
+    for (prop in p) {
+        o[prop] = p[prop];
+    }
+    return o;
+}
+function inherit(p) {
+    if (p == null) throw TypeErro();    // p不能是 null/undefined
+    if (Object.create) {    // 如果存在Object.create()则直接使用
+        return Object.create(p);
+    }
+    var t = typeof p;
+    if (t !== "object" && t !== "function") throw TypeError();
+    function f() {};
+    f.prototype = p;
+    return new f();
+}
+
+
+
+
+// -------------------------
+// NonNullSet
+var s = new FilteredSet(new Set(), function (x) { return x != null; });
+
+</script>

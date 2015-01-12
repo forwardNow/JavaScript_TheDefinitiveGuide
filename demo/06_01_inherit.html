@@ -1,0 +1,17 @@
+<script>
+// inhreit()返回了一个继承自原型对象p的属性的新对象
+// 可以是任意对象可继承
+function inherit(p) {
+    if (p == null) throw TypeErro();    // p不能是 null/undefined
+    if (Object.create) {    // 如果存在Object.create()则直接使用
+        return Object.create(p);
+    }
+    var t = typeof p;
+    if (t !== "object" && t !== "function") throw TypeError();
+    function f() {};
+    f.prototype = p;
+    return new f();
+}
+
+
+</script>
