@@ -28,9 +28,30 @@ function hideProps(o) {
         if (!Object.getOwnPropertyDescriptor(o, v).configurable) {
             return;
         }
-        Object.defineProperty(o, n, { enumerable: false });
+        Object.defineProperty(o, v, { enumerable: false });
     });
     return o;
 }
+
+// ---
+
+function Range(from, to) {
+    this.from = from;
+    this.to = to;
+    freezeProps(this);  // 将属性设置为不可变
+}
+
+Range.prototype = hideProps({   // 使用不可枚举的属性来定义原型
+    constructor: Range,
+    includes: function(x) {
+        return this.from <= x && x <= this.to;
+    },
+    foreach: function(f) {
+        for (var x = Math.ceil(this.from); x <= this.to; x++) f(x);
+    },
+    toString: function() {
+        return "(" + this.from + "..." + this.to + ")";
+    }
+});
 
 </script>
