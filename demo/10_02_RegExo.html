@@ -1,0 +1,23 @@
+<script>
+
+var p = /a/gim;
+p.global;   // => true
+p.ignoreCase;   // => true
+p.multiline;    // => true
+p.source;   // => "a"
+
+
+var pattern = /Java/g;
+var text = "JavaScript is more fun than Java!";
+for (var result; (result = pattern.exec(text)) != null;) {
+    console.log(
+        "Matched '" + result[0] + "' " +
+        "at position " + result.index + ", " +
+        "next search begins at " + pattern.lastIndex
+    );
+}
+/* =>
+ Matched 'Java' at position 0, next search begins at 4
+ Matched 'Java' at position 28, next search begins at 32
+*/
+</script>
