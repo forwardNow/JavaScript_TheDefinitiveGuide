@@ -20,4 +20,21 @@ for (var result; (result = pattern.exec(text)) != null;) {
  Matched 'Java' at position 0, next search begins at 4
  Matched 'Java' at position 28, next search begins at 32
 */
+
+
+var pattern = /java/i;
+var text = "JavaScript is not Java!";
+pattern.test(text);
+
+var pattern = /java/gi;
+var text = "JavaScript is not Java!";
+pattern.test(text); // => true
+pattern.lastIndex;  // => 4
+pattern.test(text); // => true
+pattern.lastIndex;  // => 22
+pattern.test(text); // => false
+pattern.lastIndex;  // => 0
+pattern.test(text); // => true
+pattern.lastIndex;  // => 4
+
 </script>
