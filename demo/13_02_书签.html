@@ -1,0 +1,18 @@
+<!--  
+    一个简单的JavaScript表达式计算器，
+    它允许在页面环境中计算表达式和执行语句。
+-->
+<a href='javascript: 
+    var e = "", r = "";
+    do {
+        e = prompt("Expression: " + e + "\n" + r + "\n", e);
+        try {
+            r = "Result: " + eval(e);
+        } catch (ex) {
+            r = ex;
+        }
+    } while(e);
+    void 0; /* 强制返回值为undefined */
+'>
+    JavaScript Evaluator    
+</a>
