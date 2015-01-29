@@ -1,0 +1,17 @@
+<h1>Table of Factorials</h1>
+<script>
+function factorial(n) {
+    if (n <= 1) {
+        return n;
+    }
+    return n * factorial(n - 1);
+}
+
+document.write("<table>");  // 开始创建HTML表格
+document.write("<tr><th>n</th><th>n!</th></tr>");   // 标题
+for (var i = 1; i <= 10; i++) { // 输出10行
+    document.write("<tr><td>" + i + "</td><td>" + factorial(i) + "</td></tr>");
+}
+document.write("</table>"); // 表格结束
+document.write("Generated at " + new Date());   // 输出时间戳
+</script>
