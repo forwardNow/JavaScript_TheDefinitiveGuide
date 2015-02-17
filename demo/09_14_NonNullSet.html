@@ -31,7 +31,7 @@ NonNullSet.prototype.add = function () {
 // ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
 function inherit(p) {
     var t = typeof p;
-    if (t !== "object" && t !== "function") throw TypeError();    
+    if (t !== "object" && t !== "function") throw new TypeError();
     var f = function () {};
     f.prototype = p;
     return new f();

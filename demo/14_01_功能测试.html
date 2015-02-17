@@ -1,0 +1,9 @@
+<script>
+    if (element.addEventListener) {
+        element.addEventListener("keydown", handler, false);
+    } else if (element.attachEvent) {
+        element.attachEvent("onkeydown", handler);
+    } else {
+        element.onkeydown = handler;
+    }
+</script>
