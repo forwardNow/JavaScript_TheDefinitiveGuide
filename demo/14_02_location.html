@@ -1,0 +1,32 @@
+<meta charset="UTF-8">
+<script>
+    window.location === document.location; // => true
+
+    function urlArgs() {
+        var args = {};
+        var query = location.search.substring(1);
+        var pairs = query.split("&");
+        for (var i = 0; i < pairs.length; i++) {
+            var pos = pairs[i].indexOf('=');
+            if (pos == -1) continue;
+            var name  = pairs[i].substring(0, pos);
+            var value = pairs[i].substring(pos + 1);
+            value = decodeURIComponent(value);
+            args[name] = value;
+        }
+        return args;
+    }
+
+    window.onload = function () {
+        console.info( urlArgs() );
+        // http://localhost:63342/demo/14_02_location.html?name=zhangsan&age=23
+        // => Object {name: "zhangsan", age: "23"}
+    };
+    setTimeout(function() {
+        location = "#bottom"
+    }, 1000);
+</script>
+<body>
+<div style="height: 600px;"></div>
+<a name="bottom">bottom</a>
+</body>
