@@ -54,10 +54,17 @@
     console.info(firstpara3, firstpara === firstpara2);
 
    */
+    /*
     var divs = document.getElementsByTagName("div");
     console.info("before: ", divs.length); // => 0
     var divEle = document.createElement("div");
     document.body.appendChild(divEle);
     console.info("after: ", divs.length); // => 1
+    */
+    // 查找class属性值中包含“warning”的所有元素
+    var warning = document.getElementsByClassName("warning");
+    // 查找以“log”命名并且有“error”和“fatal”类的元素的所有后代
+    var log = document.getElementById("log");
+    var fatal = log.getElementsByClassName("fatal error");
 </script>
 </html>
