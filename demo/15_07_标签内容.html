@@ -1,0 +1,80 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <span id="price">$<i>12.34</i></span>
+    <!--
+    <script>
+        price.innerHTML; // => "$<i>12.34</i>"
+        price.outerHTML; // => "<span id="price">$<i>12.34</i></span>"
+        price.outerHTML = "<a href='#'>$13.00</a>";
+        // => "<a href='#'>$13.00</a>"
+    </script>
+    -->
+    <!--
+    <script>
+        price.innerText;    // => "$12.34"
+        price.textContent;  // => "$12.34"
+
+        price.innerText = "$12.34 & ￥100";
+        // => "$12.34 & ￥100"
+    </script>
+    -->
+    <!--
+    <script id="mydata" type="text/x-custome-data">
+        < alert(*); >
+    </script>
+    <script>
+        /**
+         * 返回会设置element的textContent/innerText
+         * @param element
+         * @param value 无值，则返回文本内容；有值，则设置文本内容
+         * @returns {String|undefined}
+         */
+        function textContent(element, value) {
+            var content = element.textContent;
+            // value无值，返回element的文本内容
+            if (value === undefined) {
+                if (content !== undefined) {
+                    return content;
+                }
+                return element.innerText;
+            }
+            // value有值，设置element的内容
+            if (content !== undefined) {
+                element.textContent = value;
+            } else {
+                element.innerText = value;
+            }
+        }
+
+    </script>
+-->
+    <script>
+/**
+ * 该方法效果类似于textContent属性，返回e的纯文本内容，递归进入子元素
+ * @param e
+ * @returns {string}
+ */
+function textContent(e) {
+    var child,
+        type,
+        s = ""; // s保存所有子节点的文本
+    for (child = e.firstChild; child != null; child = child.nextSibling) {
+        type = child.nodeType;
+        if (type === 3 || type === 4) { // Text节点/CDATASection节点
+            s += child.nodeValue;
+        } else if (type === 1) {    // 递归Element节点
+            s += textContent(child);
+        }
+    }
+    return s;
+}
+
+
+    </script>
+</body>
+</html>
