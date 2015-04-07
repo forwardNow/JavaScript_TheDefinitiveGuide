@@ -1,0 +1,64 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <i id="price">$12.33</i>
+
+<script>
+    /**
+     * 用一个新的 b元素 替换节点n，并是n成为该元素的子节点
+     * @param n
+     */
+    function embolden(n) {
+        if (typeof n === "string") n = document.getElementById(n);
+        var parent = n.parentNode;
+        var b = document.createElement("b");
+        parent.replaceChild(b, n);
+        b.appendChild(n);
+    }
+//    embolden(price);
+
+    // 使用innerHTML实现outerHTML属性
+    (function(){
+        // 如果outer存在，则直接返回
+        //if (document.createElement("div").outerHTML) return;
+
+        function outerHTMLGetter() {
+            var container = document.createElement("div");
+            container.appendChild(this.cloneNode(true));
+            return container.innerHTML;
+        }
+
+        function outerHTMLSetter(value) {
+            var container = document.createElement("div");
+            container.innerHTML = value;
+            while (container.firstChild) {
+                this.parentNode.insertBefore(container.firstChild, this);
+            }
+            this.parentNode.removeChild(this); // 删除被取代的节点
+        }
+
+        if (Object.defineProperty) {
+            Object.defineProperty(Element.prototype, "outerHTML2", {
+                get: outerHTMLGetter,
+                set: outerHTMLSetter,
+                enumerable: false, configurable: true
+            });
+        } else {
+            Element.prototype.__defineGetter__("outerHTML2", outerHTMLGetter);
+            Element.prototype.__defineSetter__("outerHTML2", outerHTMLSetter);
+        }
+
+    }());
+
+    price.outerHTML2 = "<ul>" +
+                        "<li>1</li>" +
+                        "<li>2</li>" +
+                      "</ul><i>ak</i>";
+
+</script>
+</body>
+</html>
