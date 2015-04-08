@@ -5,11 +5,13 @@
     <title></title>
 </head>
 <body>
+<div class="page">1</div>
+<div class="page" id="div2">2</div>
+<div class="page">3</div>
+<div class="page">4</div>
 <style>
-    body {
-        width: 2000px;
-        height:2000px;
-    }
+    .page { width: 2000px; height:600px; border: solid 1px red; }
+    #div2 {margin-left: 2200px;}
 </style>
 <script>
     function nextPage() {
@@ -24,6 +26,12 @@
         var viewPortHeight = window.innerHeight;
         window.scrollTo(0, documentHeight - viewPortHeight);
     }
+
+    // 自动阅读：每100毫米向下股东10像素
+    // setInterval(function() { scrollBy(0, 10)}, 100);
+
+
+
 </script>
 
 </body>
