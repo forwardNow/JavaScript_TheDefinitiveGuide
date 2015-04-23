@@ -1,0 +1,15 @@
+<script>
+
+function Range(from, to) {
+    this.from = function () { return from; };
+    this.to   = function () { return to; };
+}
+
+// ---
+var r1 = new Range(1, 2);
+
+r1.from;    // => function () { return from; }
+r1.from();  // => 1
+r1.from = function () { return 10; };
+r1.from();  // => 10
+</script>

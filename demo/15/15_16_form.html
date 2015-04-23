@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<form id="address" action="http://www.baidu.com">
+    <input type="text" name="country"/>
+    <input type="text" name="city"/>
+    <input type="checkbox" id="checkbox"/>
+</form>
+<form name="shipping" >
+    <fieldset>
+        <legend>Shipping Method</legend>
+        <label><input type="radio" name="method" value="1st"/>First-class</label>
+        <label><input type="radio" name="method" value="2day"/>2-day Air</label>
+        <label><input type="radio" name="method" value="overnight"/>Overnight</label>
+    </fieldset>
+</form>
+<script>
+    var fields = document.getElementById("address").getElementsByTagName("input");
+
+    var methods = document.forms.shipping.elements.method;
+    var shipping_method;
+    for ( var i = 0; i < methods.length; i++ ) {
+        if ( methods[ i ].checked ) {
+            shipping_method = methods[i].value; break;
+        }
+    }
+</script>
+</body>
+</html>

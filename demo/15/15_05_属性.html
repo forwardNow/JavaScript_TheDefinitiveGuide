@@ -1,0 +1,23 @@
+<img id="myImage" />
+<input type="checkbox"  checked/>
+<input type="text" maxlength="22" disabled/>
+<script>
+    var image = document.getElementById("myImage");
+    image.src = "https://www.baidu.com/img/bd_logo1.png";
+
+    var checkbox = document.querySelector("input[type='checkbox']");
+    var input = document.querySelector("input[type='text']");
+
+//    console.info(checkbox.defaultChecked, typeof checkbox.defaultChecked);
+    // => true "boolean"
+//    console.info(input.maxLength, typeof input.maxLength);
+    // => 22 "number"
+    image.setAttribute("width", "100px");
+    var width = image.getAttribute("WIDTH");
+//    console.info(width, parseInt(width)); // => 100px 100
+
+    console.info(input.hasAttribute("disabled"));
+    input.removeAttribute("disabled");
+    console.info(input.hasAttribute("disabled"));
+
+</script>

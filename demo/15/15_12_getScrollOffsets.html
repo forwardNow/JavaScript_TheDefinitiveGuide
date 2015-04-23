@@ -1,0 +1,89 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        body {
+            width: 2000px;
+            height: 1000px;
+        }
+    </style>
+
+<script>
+/**
+ * 返回指定窗口的滚动条偏移量，默认为当前窗口
+ * @param w
+ * @returns {*}
+ */
+function getScrollOffsets(w) {
+    // 使用指定的窗口，否则使用当前窗口
+    w = w || window;
+
+    // 所有浏览器（除了IE8及其早期版本）
+    if (w.pageXOffset != null) {
+        return {
+            x: w.pageXOffset,
+            y: w.pageYOffset
+        };
+    }
+
+    // IE（标准模式）
+    var d = w.document;
+    if (d.compatMode == "CSS1Compat") {
+        return {
+            x: d.documentElement.scrollLeft,
+            y: d.documentElement.scrollTop
+        };
+    }
+
+    // IE（怪异模式）
+    return {
+        x: d.body.scrollLeft,
+        y: d.body.scrollTop
+    }
+}
+/**
+ *  返回视口的尺寸
+ * @param w
+ * @returns {*}
+ */
+function getViewPortSize(w) {
+
+    w = w || window;
+
+    // 所有浏览器（除了IE8及其早期版本）
+    if (w.innerWidth != null) {
+        return {
+            w: w.innerWidth,
+            h: w.innerHeight
+        };
+    }
+
+    // IE（标准模式）
+    var d = w.document;
+    if (d.compatMode == "CSS1Compat") {
+        return {
+            w: d.documentElement.clientWidth,
+            h: d.documentElement.clientHeight
+        };
+    }
+
+    // IE（怪异模式）
+    return {
+        w: d.body.clientWidth,
+        h: d.body.clientHeight
+    };
+}
+
+</script>
+
+
+</head>
+<body>
+
+
+
+
+</body>
+</html>

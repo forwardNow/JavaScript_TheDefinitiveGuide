@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+
+</head>
+<body>
+    <h1 id="head">sample</h1>
+    <input type="text" id="username" value="Ann"/>
+    <a href="#" name="baidu">123</a>
+
+    <form name="shipping_address">
+        <input type="text"/>
+    </form>
+
+    <p>11</p>
+    <p>22</p>
+</body>
+<script>
+    /**
+     * 函数接收任意多个字符串参数
+     * 每个参数将当做元素的id传给document.getElementById()
+     * 返回一个对象，它把这些id映射到对应的Element对象
+     * 如果任何一个id对应的元素未定义，则抛出一个Error对象
+     */
+    function getElements(/* ids... */) {
+        var elements = {};  // map映射对象
+        for (var i = 0; i < arguments.length; i++) {
+            var id = arguments[i];
+            var elt = document.getElementById(id);
+            if (elt == null) {
+                throw new Error("No element with id: " + id);
+            }
+            elements[id] = elt;
+        }
+        return elements;
+    }
+
+    //console.info(getElements("head", "username"));
+    //console.info(document.getElementById("baidu"));
+    //console.info(document.getElementsByName("username")[0].value);
+/*
+
+    // 针对<form name="shipping_address">元素，得到Element对象
+    var form = document.shipping_address;
+    console.info(form);
+*/
+/*
+    var paras = document.getElementsByTagName("p");
+    var firstpara = paras.item(0);
+    var firstpara2 = paras[0];
+    var firstpara3 = paras(0);
+    console.info(firstpara3, firstpara === firstpara2);
+
+   */
+    /*
+    var divs = document.getElementsByTagName("div");
+    console.info("before: ", divs.length); // => 0
+    var divEle = document.createElement("div");
+    document.body.appendChild(divEle);
+    console.info("after: ", divs.length); // => 1
+    */
+    // 查找class属性值中包含“warning”的所有元素
+    var warning = document.getElementsByClassName("warning");
+    // 查找以“log”命名并且有“error”和“fatal”类的元素的所有后代
+    var log = document.getElementById("log");
+    var fatal = log.getElementsByClassName("fatal error");
+</script>
+</html>

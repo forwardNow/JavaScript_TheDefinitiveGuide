@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+
+<style>
+    .abs-obj {
+        position: absolute;
+    }
+    
+    .box1 {
+        width: 100px;
+        height: 200px;
+        background-color: red;
+        z-index: 2;
+    }
+    .box2 {
+        width: 200px;
+        height: 100px;
+        background-color: green;
+    }
+
+</style>
+<!--     
+    <div class="abs-obj box1"></div>
+    <div>
+        <div class="abs-obj box2"></div>
+    </div>
+ -->
+
+<span style="text-shadow: 3px 3px 1px #888">Shadowed</span>
+
+<span style="position: relative;">
+    Shadowed
+        <span style="position: absolute; top: 3px; left: 3px; z-index: -1; color: #888;">
+            Shadowed
+        </span>
+</span>
+
+</body>
+</html>

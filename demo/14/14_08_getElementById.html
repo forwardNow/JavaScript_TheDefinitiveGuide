@@ -1,0 +1,10 @@
+<h1 id="heading">calculator</h1>
+<input type="text" id="input"/>
+<button id="prompt">cal</button>
+<script>
+    var ui = ["input", "prompt", "heading"]; // 存放要查找的元素id
+    ui.forEach(function(id) { // 用每个id查找对应的元素
+        ui[id] = document.getElementById(id);
+    });
+    console.info(ui.input, ui.prompt, ui.heading);
+</script>

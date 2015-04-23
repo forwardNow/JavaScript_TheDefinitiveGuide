@@ -1,0 +1,31 @@
+<meta charset="utf-8"/>
+<script>
+    /**
+     * 在等待指定的时间后，开始重复调用某个函数
+     * @param f 在未来要调用的函数
+     * @param start start毫秒后开始调用
+     * @param interval  如果设置了interval，则使用setInterval调用f
+     * @param end end毫秒后结束setInterval对f的调用，如果没有传入end，则调用不会停止
+     */
+    function invoke(f, start, interval, end) {
+        if (!start) start = 0;
+        if (arguments.length <= 2) {
+            setTimeout(f, start);
+        } else {
+            setTimeout(repeat, start);
+            function repeat() {
+                var h = setInterval(f, interval);
+                if (end) {
+                    setTimeout( function(){ clearInterval(h); }, end );
+                }
+            }
+        }
+    }
+    // 100毫秒后 调用一次
+    invoke(function(){console.info("你好")}, 100);
+    // 100毫秒后 调用一次，以后每间隔500毫秒调用一次
+    invoke(function(){console.info("你好好")}, 100, 500);
+    // 100毫秒后 调用一次，以后每间隔500毫秒调用一次，3000毫秒后停止调用
+    invoke(function(){console.info("你好好啊")}, 100, 500, 3000);
+
+</script>

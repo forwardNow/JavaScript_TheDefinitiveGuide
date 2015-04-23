@@ -1,0 +1,58 @@
+<script>
+// ----
+// 将集合类定义为一个单独的全局对象
+
+/* 模块的命名空间 */
+var sets = {};
+
+/* 在命名空间里定义类 */
+sets.SingletonSet = sets.AbstractEnumerableSet.extend(...);
+
+/* 调用命名空间里的构造函数 */
+var s = new sets.SingletonSet(1);
+
+// ----
+/* 避免命名空间前缀：将整个模块导入全局命名空间 */
+var Set = sets.Set;
+var s = new Set(1, 2, 3);
+
+// ----
+/* 深层嵌套的命名空间：collections.sets */
+var collections;        // 声明（或重新声明）这个全局变量
+if (!collections) {     // 如果它原本不存在
+    collections = {};   // 创建顶层的命名空间对象
+}   
+collections.sets = {};  // 将sets命名空间创建在它的内部
+
+collections.sets.AbstractSet = function () { /* ... */ };
+
+// 补充
+var a = 1;
+var a;
+console.log(a); // => 1
+
+// --
+/* 顶层的命名空间用反转的互联网域名 */
+// com.baidu.collections.sets 
+var com, baidu, collections, sets;
+if (!com) com = {}; 
+if (!com.baidu) com.baidu = {}; 
+if (!com.baidu.collections) com.baidu.collections = {};
+com.baidu.collections.sets = {};
+
+com.baidu.collections.sets.AbstractSet = function () { /* ... */ };
+
+// 将模块导入全局命名空间
+var sets = om.baidu.collections.sets;
+
+// 模块的文件名 和 命名空间 匹配
+/*
+com
+ |--baidu
+      |--collections
+           |-- sets   
+                |-- sets.js
+*/
+
+
+</script>

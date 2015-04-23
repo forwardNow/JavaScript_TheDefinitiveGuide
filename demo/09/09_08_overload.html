@@ -1,0 +1,77 @@
+<script>
+
+function Set() {
+    this.values = {};
+    this.n = 0;
+    if (arguments.length == 1 && isArrayLike(arguments[0])) {
+        this.add.apply(this, arguments[0]);
+    } else if (arguments.length > 0) {
+        this.add.apply(this, arguments);
+    }
+}
+
+function isArrayLike (o) {
+    if (o &&
+        typeof o === "object" &&
+        isFinite(o.length) &&
+        o.length === Math.floor(o.length) &&
+        o.length < Math.pow(2, 32)) {
+        return true;
+    }
+    return false;
+}
+
+// 将每个参数都添加进集合中
+Set.prototype.add = function() {
+    for (var i = 0; i < arguments.length; i++) {
+        var val = arguments[i]; // 待添加的值
+        var str = Set._v2s(val);// 将字符串和值对应起来
+        if (!this.values.hasOwnProperty(str)) { // 如果不在集合中
+            this.values[str] = val; // 讲字符串和值对应起来
+            this.n++; // 集合中值的计数加1
+        }
+    }
+    return this; // 支持链式方法调用
+};
+Set.prototype.foreach = function(f, context) {
+    for (var s in this.values) {
+        if (this.values.hasOwnProperty(s)) {
+            f.call(context, this.values[s]);
+        }
+    }
+};
+Set.prototype.toString = function () {
+    var s = "{",
+        i = 0;
+    this.foreach(function(v) { 
+        s += ((i++ > 0) ? ", " : "") + v;
+    });
+    return s + "}";
+};
+// 这是一个内部函数，用以将任意JavaScript值和唯一的字符串对应起来
+Set._v2s = function(val) {
+    switch (val) {
+        case undefined: return 'u'; // 特殊的原始值，值只有一个字母代码
+        case null:      return 'n'; 
+        case true:      return 't';
+        case false:     return 'f';
+        default: switch (typeof val) {
+            case 'number': return '#' + val; // 数字 # 前缀
+            case 'string': return '"' + val; // 字符串 " 前缀 
+            default:       return '@' + objectId(val); // Objs and funcs get @
+        }
+    }
+    function objectId(o) {
+        var prop = "|**objectid**|"; // 私有属性，用以存放id
+        if (!o.hasOwnProperty(prop)) { // 如果对象没有id
+            o[prop] = Set._v2s.next++; // 将下一个值赋给它
+        }
+        return o[prop]; // 返回对象的id
+    }
+};
+Set._v2s.next = 100; // 设置初始id的值
+
+// ---
+var s = new Set([1, "a", true]);
+s.toString();
+</script>
