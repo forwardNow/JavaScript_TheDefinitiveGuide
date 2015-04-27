@@ -3,8 +3,95 @@
 <head lang="en">
     <meta charset="UTF-8">
     <title></title>
+    <style>
+        #span {
+            width: 100px;
+            background: black;
+        }
+.fadeable {
+    -webkit-transition: opacity .5s ease-in;
+}
+.fadeable:hover {
+    opacity: 0;
+}
+    </style>
 </head>
 <body>
 
+    <div id="span" style="border: solid 2px red;" class="fadeable">
+        123
+    </div>
+
+<script>
+/**
+ * 将e转化为相对单位的元素，使之左右“震动”
+ * @param e 元素对象 或 元素的id
+ * @param oncomplete 回调函数，将e作为参数传入
+ * @param distance e震动的距离，默认是5px
+ * @param time 震动的时间，默认是500毫秒
+ */
+function shake ( e, oncomplete, distance, time ) {
+    var originalStyle = e.style.cssText;    // 保存e原始的style
+    var start;   // 动画开始的时间
+
+    if ( typeof e === "string" ) e = document.getElementById( e );
+
+    distance = distance || 5;
+    time = time || 500;
+
+    e.style.position = "relative";  // 使e相对定位
+
+    start = ( new Date() ).getTime();   // 动画开始的时间
+    animate();  // 动画开始
+
+    function animate () {
+        var now = ( new Date() ).getTime(); // 当前时间
+        var elapsed = now - start;  // 消耗了的时间
+        var fraction = elapsed / time; // 消耗的时间占总时间的百分比
+
+        if ( fraction < 1 ) {   // 动画未完成
+            // sin0 ~ sin4pi : 0 -> 1 -> 0 -> -1 -> 0 -> 1 -> 0 -> -1 -> 0
+            // 来回两次
+            var x = distance * Math.sin( fraction * 4 * Math.PI );
+            e.style.left = x + "px";
+
+            // 在25毫秒后（或最后一点时间里）尝试再次运行函数，产生每秒40帧的动画
+            setTimeout( animate, Math.min( 25, time - elapsed ) );
+        } else { // 动画完成
+            e.style.cssText = originalStyle; // 恢复原始样式
+            if ( oncomplete ) oncomplete( e ); // 动画执行完毕，调用回调
+        }
+    }
+
+}
+
+/**
+ * 以毫秒级的时间将e从完全不透明淡出到完全透明
+ * @param e
+ * @param oncomplete 回调函数
+ * @param time 默认500毫秒
+ */
+function fadeOut ( e, oncomplete, time ) {
+    if ( typeof e === "string" ) e = document.getElementById( e );
+    time = time || 500;
+
+    var ease = Math.sqrt;
+    var start = ( new Date() ).getTime();
+    animate();
+
+    function animate () {
+        var elapsed = ( new Date() ).getTime() - start;
+        var fraction = elapsed / time;
+        if ( fraction < 1 ) {
+            var opacity = 1 - ease( fraction );
+            e.style.opacity = String( opacity );
+            setTimeout( animate, Math.min( 25, time - elapsed ) );
+        } else {
+            e.style.opacity = "0";
+            if ( oncomplete ) oncomplete( e );
+        }
+    }
+}
+</script>
 </body>
 </html>

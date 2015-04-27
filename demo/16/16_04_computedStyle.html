@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        #title {
+            font-family: "Microsoft Yahei", Arial;
+        }
+    </style>
+</head>
+<body>
+
+
+<h1 id="title">Hello World!</h1>
+
+<script>
+
+function scale ( e, factor ) {
+
+    var size = parseInt( window.getComputedStyle( e, "").fontSize );
+
+    e.style.fontSize = factor * size + "px";
+
+}
+
+function scaleColor ( e, factor ) {
+
+    var bgColor = window.getComputedStyle( e, "").backgroundColor;
+
+    // rgb(22, 33, 44)，rgba(22, 33, 44, 0.2)
+    var components = bgColor.match(/[\d\.]+/g);
+
+    for ( var i = 0; i < 3; i++ ) { // 循环 r、g、b
+        var x = Number( components[i] ) * factor;   // 缩放 r g b
+        x = Math.round( Math.min( Math.max( x, 0 ), 255 ) ); // 设置边界并取整
+        components[i] = String( x );
+    }
+
+    if ( components.length == 3 ) {
+        e.style.backgroundColor = "rgb(" + components.join(",") + ")";
+    } else if ( components.length == 4 ) {
+        e.style.backgroundColor = "rgba(" + components.join(",") + ")";
+    }
+
+}
+
+
+</script>
+
+</body>
+</html>

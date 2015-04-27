@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style id="ss">
+        body {
+            background-color: gray;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Hello JavaScript</h1>
+
+<script>
+/**
+ * 如果传入索引，则使用 document.styleSheets[ i ];
+ * 如果传入字符串，则当做选择器，使用 querySelectorAll
+ * @param ss
+ */
+function disableStylesheet ( ss ) {
+    if ( typeof ss === "number" ) {
+        document.styleSheets[ ss ].disabled = true;
+    } else {
+        var sheets = document.querySelectorAll( ss );
+        for ( var i = 0; i < sheets.length; i++ ) {
+            sheets[ i].disabled = true;
+        }
+    }
+}
+</script>
+</body>
+</html>
