@@ -1,0 +1,47 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+    <h1>hello</h1>
+    <script>
+function addStyles ( styles ) {
+    var styleElt, styleSheet;
+    if ( document.createStyleSheet ) { // 如果是IE
+        styleSheet = document.createStyleSheet();
+    } else {
+        var head = document.getElementsByTagName( "head" )[0];
+        styleElt = document.createElement( "style" );;
+        head.appendChild( styleElt ); // 将其插入<head>
+        // 获取刚添加的样式表
+        styleSheet = document.styleSheets[ document.styleSheets.length - 1 ];
+    }
+
+    if ( typeof styles === "string" ) {
+        if ( styleElt ) {
+            styleElt.innerHTML = styles;
+        } else {
+            styleSheet.cssText = styles;
+        }
+    } else { // 如果是对象
+        var i = 0;
+        for ( var selector in styles ) {
+            if ( styleSheet.insertRule ) {
+                var rule = selector + " { " + styles[ selector ] + " } "
+                styleSheet.insertRule( rule, i++ )
+            } else {
+                styleSheet.addRule( selector, styles[ selector ], i++ );
+            }
+        }
+    }
+
+}
+
+// addStyles("h1 {color: red;}");
+// addStyles({"h1":"color: blue"});
+        
+    </script>
+</body>
+</html>

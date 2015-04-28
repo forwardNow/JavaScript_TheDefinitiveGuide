@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <style>
+        h1 {
+            color: red;
+            text-decoration: dashed;
+        }
+        a {
+            color: gray;
+        }
+    </style>
+</head>
+<body>
+    <h1>你好</h1>
+    <h2>你好！</h2>
+    <a href="#">跳转</a>
+<script>
+var ss = document.styleSheets[ 0 ];
+var rules = ss.cssRules || ss.rules;
+for ( var i = 0; i < rules.length; i++ ) {
+    var rule = rules[ i ];
+    if ( ! rule.selectorText ) { // 跳过 @import 和 非样式规则
+        continue;
+    }
+    var selector = rule.selectorText;
+    var ruleText = rule.style.cssText;
+
+    // 将 h1 的规则应用到 h2
+    if ( selector == "h1" ) {
+        if ( ss.insertRule ) {
+            ss.insertRule( "h2 { " + ruleText + " }", rules.length );
+        } else if ( ss.addRule ) {
+            ss.addRule( "h2", ruleText, rules.length );
+        }
+    }
+
+    // 如果规则设置了text-decoration 属性，则将其删除
+    if ( rule.style.textDecoration ) {
+        if ( ss.deleteRule ) {
+            ss.deleteRule( i );
+        } else if ( ss.removeRule ) {
+            ss.removeRule( i )
+        }
+        i--;
+    }
+}
+</script>
+</body>
+</html>
