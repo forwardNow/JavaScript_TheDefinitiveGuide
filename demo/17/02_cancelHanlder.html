@@ -1,0 +1,27 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+<script>
+function cancelHandler ( event ) {
+
+    var event = event || window.event;
+
+    /*
+     这里是处理事件的代码
+     */
+
+
+    if ( event.preventDefault ) event.preventDefault(); // 标准取消技术
+    if ( event.returnValue ) event.returnValue = false; // IE8-
+    // 使用对象属性或HTML属性注册的处理程序
+    return true;
+}
+</script>
+
+</body>
+</html>

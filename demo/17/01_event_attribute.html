@@ -1,0 +1,45 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+<button onclick="alert('Thanks');">Click here</button>
+<br/>
+<button onclick="var msg = 'Thanks'
+                 alert(msg)">Click here</button>
+
+<button id="btn">Click me</button>
+
+<script>
+    var btn = document.getElementById( "btn" );
+    btn.onclick = function () { alert( "Thanks" ); };
+    var clickHandler = function () {
+        alert("Thanks again!")
+    };
+    btn.addEventListener( "click", clickHandler, false );
+</script>
+
+<script>
+/**
+ * 在指定的事件目标上注册指定事件类型的处理程序函数
+ * 确保处理程序一直作为事件目标的方法调用
+ * @param target
+ * @param type
+ * @param handler
+ */
+function addEvent ( target, type, handler ) {
+    if ( target.addEventListener ) {
+        target.addEventListener( type, handler, false );
+    } else if ( target.attachEvent ) {
+        target.attachEvent( "on" + type, function ( event ) {
+            // 把处理程序作为事件目标的方法调用
+            return handler.call( target, event );
+        } )
+    }
+}
+</script>
+
+</body>
+</html>
