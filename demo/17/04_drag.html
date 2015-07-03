@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+<style>
+    * { margin: 0; padding: 0; }
+
+    .drag-box {
+        position: absolute;
+        left: 100px;
+        top: 100px;
+        width: 250px; background-color: white; border: solid 2px black; }
+
+    .drag-title { background-color: gray; border-bottom: dotted 1px black; }
+</style>
+<div class="drag-box">
+    <h1 class="drag-title" onmousedown="drag( this.parentNode, event )">拖动我</h1>
+    <p>这是一个测试块</p>
+</div>
+<script>
+    // Return the current scrollbar offsets as the x and y properties of an object
+    function getScrollOffsets(w) {
+        // Use the specified window or the current window if no argument
+        w = w || window;
+
+        // This works for all browsers except IE versions 8 and before
+        if (w.pageXOffset != null) return {x: w.pageXOffset, y:w.pageYOffset};
+
+        // For IE (or any browser) in Standards mode
+        var d = w.document;
+        if (document.compatMode == "CSS1Compat")
+            return {x:d.documentElement.scrollLeft, y:d.documentElement.scrollTop};
+
+        // For browsers in Quirks mode
+        return { x: d.body.scrollLeft, y: d.body.scrollTop };
+    }
+
+    /**
+     * @param elementToDrag 待拖动的元素，它必须是绝对定位元素；
+     *          它的left和top会随着拖动改变而改变
+     * @param event mousedown事件对象
+     */
+    function drag ( elementToDrag, event ) {
+        // 将视口坐标转换为文档坐标
+        var scroll = getScrollOffsets();
+        var startX = event.clientX + scroll.x;
+        var startY = event.clientY + scroll.y;
+
+        // 文档坐标下，待拖动元素的初始位置
+        // elementToDrag是绝对定位元素，假设它的offsetParent就是文档的body元素
+        var origX = elementToDrag.offsetLeft;
+        var origY = elementToDrag.offsetTop;
+
+        // 计算mousedown事件点击的位置和元素左上角之间的距离
+        var deltaX = startX - origX;
+        var deltaY = startY - origY;
+
+        // 注册用于响应接着mousedown事件发生的mousemove和mouseup事件的处理程序
+        if ( document.addEventListener ) { // 标准事件模型
+            document.addEventListener( "mousemove", moveHandler, true );
+            document.addEventListener( "mouseup", upHandler, true );
+        } else if ( document.attachEvent ) { // IE8- 事件模型
+            // 在IE事件模型中，捕获事件是通过调用元素上的setCapture()捕获它们的
+            elementToDrag.setCapture();
+            elementToDrag.attachEvent( "onmousemove", moveHandler );
+            elementToDrag.attachEvent( "onmouseup", upHandler );
+            // 将捕获丢失看做是mouseup
+            elementToDrag.attachEvent( "onlosecapture", upHandler );
+        }
+
+        // 阻止冒泡
+        if ( event.stopPropagation ) event.stopPropagation(); // 标准模型
+        else event.cancelBubble = true; // IE
+
+        // 取消默认操作
+        if ( event.preventDefault ) event.preventDefault();   // 标准模型
+        else event.returnValue = false; // IE
+
+        /**
+         * 当元素正在被拖动时，该函数用于移动这个元素
+         * @param e
+         */
+        function moveHandler ( e ) {
+            e = e || window.event;
+
+            var scroll = getScrollOffsets();
+            elementToDrag.style.left = ( e.clientX + scroll.x - deltaX ) + "px";
+            elementToDrag.style.top  = ( e.clientY + scroll.y - deltaY ) + "px";
+
+            if (e.stopPropagation ) e.stopPropagation();
+            else e.cancelBubble = true;
+        }
+
+        /**
+         * 拖动结束时
+         * @param e
+         */
+        function upHandler ( e ) {
+            e = e || window.event;
+
+            // 注销捕获事件处理程序
+            if ( document.removeEventListener ) {
+                document.removeEventListener( "mouseup", upHandler, true );
+                document.removeEventListener( "mousemove", moveHandler, true );
+            } else if ( document.detachEvent ) {
+                elementToDrag.detachEvent( "onlosecapture", upHandler );
+                elementToDrag.detachEvent( "onmouseup", upHandler );
+                elementToDrag.detachEvent( "onmousemove", moveHandler );
+                elementToDrag.releaseCapture();
+            }
+
+            if (e.stopPropagation ) e.stopPropagation();
+            else e.cancelBubble = true;
+        }
+
+    }
+</script>
+</body>
+</html>

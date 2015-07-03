@@ -1,0 +1,66 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Document</title>
+</head>
+<body>
+
+<style>
+    #clock {
+        font: bold 24pt sans;
+        background-color: #ddf;
+        padding: 10px;
+        border: solid black 2px;
+        border-radius: 10px;
+    }
+</style>
+
+    <h1>从时钟中拖出时间戳</h1>
+
+    <!--显示时间-->
+    <span id="clock"></span>
+
+    <!--把时间戳放置在这里-->
+    <textarea cols="20" rows="20"></textarea>
+
+<script>
+    var clock = document.getElementById("clock"); // 时钟
+    var icon = new Image(); // 用于拖动的图片
+    icon.src = "http://www.iconpng.com/png/eldorado_education/004.png";
+
+    // 让时钟每秒更新一次
+    function displayTime() {
+        var now = new Date();
+        var hours = now.getHours();
+        var minutes = now.getMinutes();
+        var seconds = now.getSeconds();
+        if ( minutes < 10 ) minutes = "0" + minutes;
+        if ( seconds < 10 ) seconds = "0" + seconds;
+        clock.innerHTML = hours + ":" + minutes + ":" + seconds;
+        setTimeout( displayTime, 1000 );
+    }
+    displayTime();
+
+    // 使时钟能够拖动，使用<span draggable="true">也行
+    clock.draggable = true;
+
+    // 设置拖动事件处理程序
+    clock.ondragstart = function ( event ) {
+        var event = event || window.event;
+
+        // DataTransfer对象是拖放API的关键
+        var dt = event.dataTransfer;
+
+        // 告诉浏览器正则拖动的数据类型及数据（这里的数据是时间戳）
+        dt.setData( "Text", clock.innerHTML + "\n" );
+
+        // 用图标来表示正则被拖动的时间戳
+        if ( dt.setDragImage ) {
+            dt.setDragImage( icon, 0, 0 );
+        }
+    };
+
+</script>
+</body>
+</html>
