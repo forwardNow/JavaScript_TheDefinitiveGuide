@@ -1,0 +1,34 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="../lib/jquery.js"></script>
+</head>
+<body>
+
+<a href="#">link</a>
+<img/>
+<script>
+    $( "a").attr( "href" ); //=> "#"
+
+    $( "a").attr( "href", "http://www.baidu.com" );
+
+    $( "img").attr( {
+        src: "banner.gif",
+        alt: "Advertisement",
+        width: 960,
+        height: 400
+    } );
+
+    // 站内链接在本窗口中打开，非站内链接在新窗口中打开
+    $( "a").attr( "target", function () {
+        if ( this.host == location.href ) {
+            return "_self"
+        } else {
+            return "_blank";
+        }
+    } );
+</script>
+</body>
+</html>

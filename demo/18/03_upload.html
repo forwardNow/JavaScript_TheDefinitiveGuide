@@ -1,0 +1,70 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+
+<input type="file" data-uploadto="../upload"/> <br/>
+<input type="file" data-uploadto="../upload"/>
+
+<script>
+    var elts = document.getElementsByTagName( "input" );
+    for ( var i = 0; i < elts.length; i++ ) {
+
+        var input = elts[ i ];
+        if ( input.type !== "file" ) {
+            continue;
+        }
+        var url = input.getAttribute( "data-uploadto" );
+        if ( ! url ) {
+            continue;
+        }
+
+        input.addEventListener( "change", function () {
+            var file = this.files[ 0 ];
+            if ( ! file ) {
+                return;
+            }
+            var xhr = new XMLHttpRequest();
+            xhr.open( "POST", url );
+            xhr.send( file );
+        }, false );
+    }
+</script>
+
+<script>
+
+    function postFormData( url, data, callback ) {
+
+        if ( typeof FormData === "undefined" ) {
+            throw new Error( "FormData is not implemented" );
+        }
+
+        var request = new XMLHttpRequest();
+        request.open( "POST", url );
+        request.onreadystatechange = function () {
+            if ( request.readyState === 4 && callback ) {
+                callback( request );
+            }
+        };
+        var formdata = new FormData();
+        for ( var name in data ) {
+            if ( ! data.hasOwnProperty( name ) ) {
+                continue;
+            }
+            var value = data[ name ];
+            if ( typeof  ) {
+
+            }
+        }
+
+    }
+
+
+</script>
+
+</body>
+</html>

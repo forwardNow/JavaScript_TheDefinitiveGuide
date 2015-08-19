@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+<script>
+
+    /**
+     * 编码对象的属性，使用 application/x-www-form-urlencoded
+     * @param data
+     * @returns {string}
+     */
+    function encodeFormData( data ) {
+        if ( ! data ) {
+            return "";
+        }
+        var pairs = []; // 名/值 对
+        for ( var name in data ) {
+            // 跳过继承属性
+            if ( ! data.hasOwnProperty( name ) ) {
+                continue;
+            }
+            // 跳过方法
+            if ( typeof data[ name ] === "function" ) {
+                continue;
+            }
+            // 对名字和值进行 URL编码
+            var value = data[ name].toString();
+            name = encodeURIComponent( name );
+            value = encodeURIComponent( value );
+            // 将名/值对保持到pairs
+            pairs.push( name + "=" + value );
+        }
+        // 使用“&”连接 name=value
+        return pairs.join( "&" );
+    }
+    // encodeFormData( { name: "zhangsan", gender: "男" } )
+    // =>"name=zhangsan&gender=%E7%94%B7"
+
+    /**
+     *
+     * @param url
+     * @param data Object类型
+     * @param callback 该回调函数负责检查响应状态码和提取响应文本
+     */
+    function postData( url, data, callback ) {
+        var request = new XMLHttpRequest();
+        request.open( "POST", url );
+        request.onreadystatechange = function () {
+            if ( request.readyState === 4 && callback) {
+                callback( request );
+            }
+        }
+        request.setRequestHeader( "Content-Type",
+                "application/x-www-form-urlencoded");
+        request.send( encodeFormData( data ) );
+    }
+    /*
+    servlet
+        request.setCharacterEncoding( "UTF-8" );
+        String name = request.getParameter("name" );
+        String gender = request.getParameter( "gender" );
+        System.out.println( name + "  " + gender );
+    */
+
+
+    function getData( url, data, callback ) {
+        var request = new XMLHttpRequest();
+        request.open( "GET", url + "?" + encodeFormData( data ) );
+        request.onreadystatechange = function () {
+            if( request.readyState === 4 && callback ) {
+                callback( request );
+            }
+        }
+        request.setRequestHeader( "Content-Type",
+                "application/x-www-form-urlencoded" );
+        request.send( null );
+    }
+    /*
+     servlet
+         String name = request.getParameter("name" );
+         String gender = request.getParameter( "gender" );
+         gender = new String( gender.getBytes( "ISO8859-1" ), "UTF-8");
+         System.out.println( name + "  " + gender );
+     */
+
+
+    function postJSON( url, data, callback ) {
+        var request = new XMLHttpRequest();
+        request.open( "POST", url );
+        request.onreadystatechange = function () {
+            if ( request.readyState === 4 && callback ) {
+                callback( request );
+            }
+        };
+        request.setRequestHeader( "Content-Type", "application/json" );
+        request.send( JSON.stringify( data ) );
+    }
+    /*
+     postJSON( "../Json", { name: "zhangsan", gender: "男" }, function(s) {console.info(s)} );
+
+     servlet
+         InputStream in = request.getInputStream();
+         BufferedReader buffr = new BufferedReader( new InputStreamReader( in ) );
+         String json = buffr.readLine();
+         System.out.println( json  );
+     */
+
+
+    function postXML( url, doc, callback ) {
+        var request = new XMLHttpRequest();
+        request.open( "POST", url );
+        request.onreadystatechange = function () {
+            if ( request.readyState === 200 && callback ) {
+                callback( request );
+            }
+        };
+        request.send( doc );
+    }
+
+    // 创建一个XML文档，根元素是<books>
+    var doc = document.implementation.createDocument("", "books", null);
+    var books = doc.documentElement; // <books>
+    var book = doc.createElement( "book" );
+    books.appendChild( book );
+    book.setAttribute( "name", "JavaScript权威指南" );
+    book.setAttribute( "price", "￥12.34" );
+
+
+</script>
+
+
+</body>
+</html>

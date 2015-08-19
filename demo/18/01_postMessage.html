@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+</head>
+<body>
+
+<script>
+
+    // 用POST方法发送纯文本给服务器
+    function postMessage( msg ) {
+        // 新请求
+        var request = new XMLHttpRequest();
+        // 用POST向服务器端发送脚本
+        request.open( "POST", "/servlet/log" );
+        // 用请求主体发送纯文本消息
+        request.setRequestHeader( "Content-Type",
+                                  "text/plain;charset=UTF-8" );
+        // 把msg作为请求主体发送
+        request.send( msg );
+        // 请求完成，忽略任何响应和任何错误
+    }
+
+    /**
+     * 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+     * 	    throws ServletException, IOException {
+     *      response.setContentType("text/plain;charset=UTF-8");
+     *      response.getWriter().write( "哇哈哈" );
+     *  }
+     */
+    function getText( url, callback ) {
+        var request = new XMLHttpRequest();
+        request.open( "GET", url );
+        request.onreadystatechange = function () {
+            // 如果请求没有成功则返回
+            if ( ! ( request.readyState === 4 && request.status === 200 ) ) {
+                return;
+            }
+            var type = request.getResponseHeader( "Content-Type" );
+            if ( type.match( /^text/ ) ) {
+                callback( request.responseText );
+            }
+        };
+        request.send( null );
+    }
+
+    // getText( "../Login", function ( msg ) { console.info( msg ); } )
+
+    // 发起同步的HTTP GET请求以获得指定URL的内容
+    function getTextSync( url ) {
+        var request = new XMLHttpRequest();
+        request.open( "GET", url, false ); // 传递false实现同步
+        request.send( null );
+        if ( request.status !== 200 ) {
+            throw new Error( request.statusText );
+        }
+        var type = request.getResponseHeader( "Content-Type" );
+        if ( ! type.match( /^text/ ) ) {
+            throw new Error( "Expected textual response; got: " + type );
+        }
+        return request.responseText;
+    }
+
+
+    /**
+     *
+     * 	protected void doGet(HttpServletRequest request, HttpServletResponse response)
+     * 	    throws ServletException, IOException {
+            String mimeType = request.getParameter( "mimeType" );
+            String contentType = "text/plain";
+            String content = "wahaha";
+
+            if ( "xml".equals( mimeType ) ) {
+                contentType = "text/xml";
+                content =
+                        "<?xml version=\"1.0\" encoding=\"UTF-8\"?>" +
+                        "<books>" +
+                        "    <book>" +
+                        "        <nama>JavaScript</nama>" +
+                        "        <price>$12.34</price>" +
+                        "    </book>" +
+                        "</books>"
+                        ;
+            } else if ( "json".equals( mimeType ) ) {
+                contentType = "application/json";
+                content = "{ \"book\": \"JavaScript\" }";
+            }
+
+            response.setContentType( contentType );
+
+            response.getWriter().print( content );
+        }
+     *
+     *
+     *
+     * 发起HTTP GET请求，以获取指定URL的内容，
+     * 当响应到达时，把它以解析后的XML Document对象、JSON对象、字符串 传递给callback()
+     */
+    function get( url, callback ) {
+        var request = new XMLHttpRequest();
+        request.open( "GET", url );
+        request.onreadystatechange = function () {
+            if ( ! ( request.readyState === 4 && request.status ===200 ) ) {
+                return;
+            }
+            var type = request.getResponseHeader( "Content-Type" );
+            if ( type.indexOf( "xml" ) !== -1 && request.responseXML ) {
+                callback( request.responseXML );
+            } else if ( type === "application/json" ) {
+                callback( JSON.parse( request.responseText ) );
+            } else {
+                callback( request.responseText );
+            }
+        };
+        request.send( null );
+    }
+    // get( "../Dic?mimeType=json", function ( msg ) { console.info( msg ); } )
+
+    // Asynchronously load and execute a script from a specified URL
+    function loadasync(url) {
+        var head = document.getElementsByTagName("head")[0]; // Find document <head>
+        var s = document.createElement("script"); // Create a <script> element
+        s.src = url; // Set its src attribute
+        head.appendChild(s); // Insert the <script> into head
+    }
+
+    // https://ss0.bdstatic.com/5aV1bjqh_Q23odCf/static/superplus/js/lib/jquery-1.10.2_d88366fd.js
+
+
+</script>
+
+</body>
+</html>

@@ -11,9 +11,9 @@
     data-messageid 指定输入非法时要显示的消息元素的id
 -->
 <input id="zip" type="text"
-       data-allowed-chars="^[0-9]*$"
+       data-allowed-chars="(^\-$)|(^\-?[0-9]{1,4}$)"
        data-messageid="zipwarn">
-<span id="zipwarn" style="color:red;visibility: hidden;">只支持数字</span>
+<span id="zipwarn" style="color:red;visibility: hidden;">只支持数字,位数最大为4</span>
 
 
 <script>

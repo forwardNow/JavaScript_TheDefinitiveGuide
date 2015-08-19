@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="../lib/jquery.js"></script>
+</head>
+<body>
+
+<div id="title">标题</div>
+<p id="cont">锄禾日当午，汗滴禾下土</p>
+
+<style>
+    .bg-gray { background-color: gray; }
+    .c-red { color: red; }
+</style>
+<script>
+    // addClass()
+    $( "#title" ).addClass( "c-red" );
+
+    $( "#title" ).addClass( "c-red bg-gray" );
+
+    $( "#title" ).addClass( function ( index, className ) {
+        return "bg-gray";
+    } );
+
+    // removeClass()
+</script>
+</body>
+</html>

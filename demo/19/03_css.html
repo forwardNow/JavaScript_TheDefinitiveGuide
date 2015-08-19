@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="../lib/jquery.js"></script>
+</head>
+<body>
+    <h1>标题</h1>
+    <script>
+
+    $( "h1" ).css( "font-weight" ); //=> "bold"
+    $( "h1" ).css( "fontSize" );    // => "32px"
+
+    $( "h1" ).css( "font-style", "italic" );    //=> jQuery对象
+
+    $( "h1" ).css( "border", "solid 1px red" );
+
+    // 传入对象
+    $( "h1" ).css( {
+        color: "blue",
+        backgroundColor: "gray",
+        "font-family": "Microsoft Yahei"
+    } );
+
+    // 通过函数赋值：将字体增大25%
+    $( "h1" ).css( "font-size", function ( i, curval ) {
+        return Math.round( parseInt( curval ) * 1.25 );
+    });
+    </script>
+</body>
+</html>
