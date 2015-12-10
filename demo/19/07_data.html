@@ -1,0 +1,20 @@
+<!DOCTYPE html>
+<html>
+<head lang="en">
+    <meta charset="UTF-8">
+    <title></title>
+    <script src="../lib/jquery.js"></script>
+</head>
+<body>
+    <div id="info"></div>
+    <script>
+
+        var info = $( "#info");
+        info.data();    //=> Object {}
+        info.data( "name", "zhangsan" );
+        info.data();    //=> Object {name: "zhangsan"}
+        info.data( { gender: "man", age: 22 } );
+        info.removeData( "gender" )
+    </script>
+</body>
+</html>

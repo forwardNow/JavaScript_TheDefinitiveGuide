@@ -44,4 +44,14 @@ s.toArray();    // => ["a", "b"]
 s.add(2);
 // => Uncaught value 2 rejected by filter
 
+
+
+// ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+function inherit(p) {
+    var t = typeof p;
+    if (t !== "object" && t !== "function") throw new TypeError();
+    var f = function () {};
+    f.prototype = p;
+    return new f();
+}
 </script>
